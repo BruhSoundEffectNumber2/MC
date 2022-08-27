@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e9daa323-23c1-48e6-b2c7-410a4c3dfc0b" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8c99985ff12947baa88b379583357ac3294000/50/656f7c3d/Vector3.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8c99985ff12947baa88b379583357ac3294000/fd/161af70e/GodotTaskScheduler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c84d94161bca414384015e66544862cf46c600/98/6927914f/Monitor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c84d94161bca414384015e66544862cf46c600/fa/39b522be/Task.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2DSPdB2rUWVCemccqHKTHcr8UIq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Start and Debug.Player">
+    <configuration name="Attach to Player" type="ConnectRemote" factoryName="Mono Remote" show_console_on_std_err="false" show_console_on_std_out="false" port="23685" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Editor" type="GODOT_DEBUG_RUN_CONFIGURATION" factoryName="Start and Debug">
+      <option name="EXE_PATH" value="$USER_HOME$/Desktop/Programs/Godot_v3.5-stable_mono_win64/Godot_v3.5-stable_mono_win64.exe" />
+      <option name="PROGRAM_PARAMETERS" value="--path &quot;$PROJECT_DIR$&quot; --editor" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2">
+        <option name="Build Solution" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Player" type="GODOT_DEBUG_RUN_CONFIGURATION" factoryName="Start and Debug">
+      <option name="EXE_PATH" value="$USER_HOME$/Desktop/Programs/Godot_v3.5-stable_mono_win64/Godot_v3.5-stable_mono_win64.exe" />
+      <option name="PROGRAM_PARAMETERS" value="--path &quot;$PROJECT_DIR$&quot;" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2">
+        <option name="Build Solution" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e9daa323-23c1-48e6-b2c7-410a4c3dfc0b" name="Changes" comment="" />
+      <created>1660689601110</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1660689601110</updated>
+      <workItem from="1660689610029" duration="5902000" />
+      <workItem from="1660702351776" duration="8933000" />
+      <workItem from="1660767161093" duration="7573000" />
+      <workItem from="1660795234077" duration="2383000" />
+      <workItem from="1660843472764" duration="9406000" />
+      <workItem from="1660866181982" duration="4063000" />
+      <workItem from="1660884447167" duration="35000" />
+      <workItem from="1660884640538" duration="2040000" />
+      <workItem from="1660936267165" duration="12036000" />
+      <workItem from="1660968356305" duration="4585000" />
+      <workItem from="1661017233949" duration="2020000" />
+      <workItem from="1661039244055" duration="4583000" />
+      <workItem from="1661055033526" duration="3711000" />
+      <workItem from="1661103657893" duration="9086000" />
+      <workItem from="1661133444625" duration="3192000" />
+      <workItem from="1661142120253" duration="1068000" />
+      <workItem from="1661209949594" duration="5403000" />
+      <workItem from="1661229816728" duration="1906000" />
+      <workItem from="1661289037159" duration="5209000" />
+      <workItem from="1661304808269" duration="1827000" />
+      <workItem from="1661377126973" duration="5561000" />
+      <workItem from="1661391103997" duration="5839000" />
+      <workItem from="1661451834301" duration="8655000" />
+      <workItem from="1661488136276" duration="3646000" />
+      <workItem from="1661541439664" duration="8401000" />
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>
