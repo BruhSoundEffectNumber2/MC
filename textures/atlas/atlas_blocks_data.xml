@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atlas>
+  <block id="0">
+    <name>dirt</name>
+    <face x="0" y="0">all</face>
+  </block>
+  <block id="1">
+    <name>grass</name>
+    <face x="0" y ="0">side</face>
+    <face x="1" y ="0">top</face>
+    <face x="1" y ="0">bottom</face>
+  </block>
+</atlas>

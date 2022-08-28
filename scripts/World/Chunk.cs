@@ -45,7 +45,7 @@ namespace MC.World
                     for (int z = 0; z < ChunkSize; z++)
                     {
                         BPos pos = new BPos(x, y, z);
-                        this[pos] = new Block(TerrainGenerator.BlockSolid(position, pos), 0);
+                        this[pos] = new Block(TerrainGenerator.BlockSolid(position, pos), 1);
                     }
                 }
             }

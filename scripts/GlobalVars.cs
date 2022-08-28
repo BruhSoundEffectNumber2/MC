@@ -47,6 +47,27 @@ namespace MC
             }
         }
 
+        public static int DirectionFromName(string name)
+        {
+            switch (name)
+            {
+                case "forward":
+                    return 0;
+                case "backward":
+                    return 1;
+                case "left":
+                    return 2;
+                case "right":
+                    return 3;
+                case "top":
+                    return 4;
+                case "bottom":
+                    return 5;
+                default:
+                    throw new Exception("Invalid direction");
+            }
+        }
+
         /// <summary>
         /// Returns the translation of a chunk in Godot's coordinate space.
         /// </summary>

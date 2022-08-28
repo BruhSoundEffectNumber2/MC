@@ -1,6 +1,7 @@
 ﻿using static MC.GlobalVars;
 using System;
 using Godot;
+using MC.Graphics;
 
 using GArray = Godot.Collections.Array;
 using GPos = Godot.Vector3;
@@ -34,14 +35,14 @@ namespace MC.World
                             
                             if (AdjacentSolid(ref chunks, position, offset, vector)) continue;
                             
-                            AddFace(ref surface, chunk, BlockTranslation(offset), vector);
+                            AddFace(ref surface, chunk, BlockTranslation(offset), vector, chunk[x, y, z].Type);
                         }
                     }
                 }
             }
 
             surface.GenerateNormals();
-            surface.GenerateTangents();
+            //surface.GenerateTangents();
             return surface.CommitToArrays();
         }
 
@@ -123,66 +124,102 @@ namespace MC.World
             return chunk[checkPosition].Solid;
         }
 
-        private static void AddFace(ref SurfaceTool surface, Chunk chunk, GPos offset, BPos direction)
+        private static void AddFace(ref SurfaceTool surface, Chunk chunk, GPos offset, BPos direction, int type)
         {
             if (direction == BlockForward)
             {
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 0));
                 surface.AddVertex(offset + new GPos(0, 1, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 2));
                 surface.AddVertex(offset + new GPos(-1, 0, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 3));
                 surface.AddVertex(offset + new GPos(0, 0, -1));
                               
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 0));
                 surface.AddVertex(offset + new GPos(0, 1, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 1));
                 surface.AddVertex(offset + new GPos(-1, 1, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 2));
                 surface.AddVertex(offset + new GPos(-1, 0, -1));
             } 
             else if (direction == BlockBackward)
             {
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 0));
                 surface.AddVertex(offset + new GPos(0, 1, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 3));
                 surface.AddVertex(offset + new GPos(0, 0, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 2));
                 surface.AddVertex(offset + new GPos(-1, 0, 0));
 
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 0));
                 surface.AddVertex(offset + new GPos(0, 1, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 2));
                 surface.AddVertex(offset + new GPos(-1, 0, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 1));
                 surface.AddVertex(offset + new GPos(-1, 1, 0));
             }
             else if (direction == BlockLeft)
             {
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 0));
                 surface.AddVertex(offset + new GPos(-1, 1, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 2));
                 surface.AddVertex(offset + new GPos(-1, 0, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 3));
                 surface.AddVertex(offset + new GPos(-1, 0, -1));
             
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 0));
                 surface.AddVertex(offset + new GPos(-1, 1, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 1));
                 surface.AddVertex(offset + new GPos(-1, 1, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 2));
                 surface.AddVertex(offset + new GPos(-1, 0, 0));
             }
             else if (direction == BlockRight)
             {
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 0));
                 surface.AddVertex(offset + new GPos(0, 1, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 3));
                 surface.AddVertex(offset + new GPos(0, 0, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 2));
                 surface.AddVertex(offset + new GPos(0, 0, 0));
 
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 0));
                 surface.AddVertex(offset + new GPos(0, 1, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 2));
                 surface.AddVertex(offset + new GPos(0, 0, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 1));
                 surface.AddVertex(offset + new GPos(0, 1, 0));
             }
             else if (direction == BlockUp)
             {
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 2));
                 surface.AddVertex(offset + new GPos(0, 1, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 0));
                 surface.AddVertex(offset + new GPos(-1, 1, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 1));
                 surface.AddVertex(offset + new GPos(0, 1, -1));
             
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 2));
                 surface.AddVertex(offset + new GPos(0, 1, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 3));
                 surface.AddVertex(offset + new GPos(-1, 1, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 0));
                 surface.AddVertex(offset + new GPos(-1, 1, -1));
             }
             else if (direction == BlockDown)
             {
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 2));
                 surface.AddVertex(offset + new GPos(0, 0, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 1));
                 surface.AddVertex(offset + new GPos(0, 0, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 0));
                 surface.AddVertex(offset + new GPos(-1, 0, -1));
 
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 2));
                 surface.AddVertex(offset + new GPos(0, 0, 0));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 0));
                 surface.AddVertex(offset + new GPos(-1, 0, -1));
+                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 3));
                 surface.AddVertex(offset + new GPos(-1, 0, 0));
             }
             else

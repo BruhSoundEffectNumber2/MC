@@ -1,9 +1,11 @@
 ﻿using static MC.GlobalVars;
 using System.Threading;
+using MC.Graphics;
 using MC.World.Terrain;
 using GPos = Godot.Vector3;
 using BPos = Godot.Vector3;
 using CPos = Godot.Vector2;
+using Thread = System.Threading.Thread;
 
 namespace MC.World
 {
@@ -19,6 +21,8 @@ namespace MC.World
         public static void Initialize()
         {
             TerrainGenerator.Initialize();
+            BlockTextureMapper.Initialize();
+
             _localChunksCenter = CPos.Zero;
             _localChunks = new Chunk[RenderDistance * 2, RenderDistance * 2];
             UpdateChunks();
