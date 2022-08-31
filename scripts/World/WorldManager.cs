@@ -19,7 +19,7 @@ namespace MC.World
         {
             _instance = this;
             VisualServer.SetDebugGenerateWireframes(true);
-                        
+
             GameWorld.Initialize();
         }
 

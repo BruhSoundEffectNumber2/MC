@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://fonts/Sibila.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://scripts/UI/FrameCounter.cs" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.176471, 0.176471, 0.176471, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="DynamicFont" id=2]
+size = 22
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="FrameCounter" type="PanelContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -100.0
+margin_bottom = 50.0
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Text" type="Label" parent="FrameCounter"]
+margin_left = 2.0
+margin_top = 12.0
+margin_right = 98.0
+margin_bottom = 38.0
+custom_fonts/font = SubResource( 2 )
+text = "FPS: XXX"
+align = 1
+valign = 1

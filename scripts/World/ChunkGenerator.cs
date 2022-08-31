@@ -35,14 +35,14 @@ namespace MC.World
                             
                             if (AdjacentSolid(ref chunks, position, offset, vector)) continue;
                             
-                            AddFace(ref surface, chunk, BlockTranslation(offset), vector, chunk[x, y, z].Type);
+                            AddFace(ref surface, BlockTranslation(offset), i, chunk[x, y, z].Type);
                         }
                     }
                 }
             }
 
             surface.GenerateNormals();
-            //surface.GenerateTangents();
+            surface.GenerateTangents();
             return surface.CommitToArrays();
         }
 
@@ -124,108 +124,76 @@ namespace MC.World
             return chunk[checkPosition].Solid;
         }
 
-        private static void AddFace(ref SurfaceTool surface, Chunk chunk, GPos offset, BPos direction, int type)
+        private static void AddFace(ref SurfaceTool surface, GPos offset, int dir, int type)
         {
-            if (direction == BlockForward)
-            {
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 0));
-                surface.AddVertex(offset + new GPos(0, 1, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 2));
-                surface.AddVertex(offset + new GPos(-1, 0, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 3));
-                surface.AddVertex(offset + new GPos(0, 0, -1));
-                              
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 0));
-                surface.AddVertex(offset + new GPos(0, 1, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 1));
-                surface.AddVertex(offset + new GPos(-1, 1, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 0, 2));
-                surface.AddVertex(offset + new GPos(-1, 0, -1));
-            } 
-            else if (direction == BlockBackward)
-            {
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 0));
-                surface.AddVertex(offset + new GPos(0, 1, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 3));
-                surface.AddVertex(offset + new GPos(0, 0, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 2));
-                surface.AddVertex(offset + new GPos(-1, 0, 0));
+            var start = Vector3.Zero;
+            var rotAxis = Vector3.Zero;
+            var rotAngle = 0f;
 
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 0));
-                surface.AddVertex(offset + new GPos(0, 1, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 2));
-                surface.AddVertex(offset + new GPos(-1, 0, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 1, 1));
-                surface.AddVertex(offset + new GPos(-1, 1, 0));
-            }
-            else if (direction == BlockLeft)
+            switch (dir)
             {
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 0));
-                surface.AddVertex(offset + new GPos(-1, 1, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 2));
-                surface.AddVertex(offset + new GPos(-1, 0, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 3));
-                surface.AddVertex(offset + new GPos(-1, 0, -1));
+                case 0:
+                    start = new Vector3(0, 0, -1);
+                    rotAxis = Vector3.Up;
+                    rotAngle = 0;
+                    break;
+                case 1:
+                    start = new Vector3(1, 0, 0);
+                    rotAxis = Vector3.Up;
+                    rotAngle = Mathf.Pi;
+                    break;
+                case 2:
+                    start = new Vector3(1, 0, -1);
+                    rotAxis = Vector3.Up;
+                    rotAngle = Mathf.Pi / 2f;
+                    break;
+                case 3:
+                    start = new Vector3(0, 0, 0);
+                    rotAxis = Vector3.Up;
+                    rotAngle = Mathf.Pi / -2f;
+                    break;
+                case 4:
+                    start = new Vector3(0, -1, -1);
+                    rotAxis = Vector3.Left;
+                    rotAngle = Mathf.Pi / -2f;
+                    break;
+                case 5:
+                    start = new Vector3(0, 0, 0);
+                    rotAxis = Vector3.Left;
+                    rotAngle = Mathf.Pi / 2f;
+                    break;
+            }
             
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 0));
-                surface.AddVertex(offset + new GPos(-1, 1, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 1));
-                surface.AddVertex(offset + new GPos(-1, 1, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 2, 2));
-                surface.AddVertex(offset + new GPos(-1, 0, 0));
-            }
-            else if (direction == BlockRight)
-            {
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 0));
-                surface.AddVertex(offset + new GPos(0, 1, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 3));
-                surface.AddVertex(offset + new GPos(0, 0, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 2));
-                surface.AddVertex(offset + new GPos(0, 0, 0));
-
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 0));
-                surface.AddVertex(offset + new GPos(0, 1, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 2));
-                surface.AddVertex(offset + new GPos(0, 0, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 3, 1));
-                surface.AddVertex(offset + new GPos(0, 1, 0));
-            }
-            else if (direction == BlockUp)
-            {
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 2));
-                surface.AddVertex(offset + new GPos(0, 1, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 0));
-                surface.AddVertex(offset + new GPos(-1, 1, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 1));
-                surface.AddVertex(offset + new GPos(0, 1, -1));
+            var tl = offset + (start + new Vector3(0, 1, 0)).Rotated(rotAxis, rotAngle);
+            var bl = offset + (start + new Vector3(0, 0, 0)).Rotated(rotAxis, rotAngle);
+            var tr = offset + (start + new Vector3(-1, 1, 0)).Rotated(rotAxis, rotAngle);
+            var br = offset + (start + new Vector3(-1, 0, 0)).Rotated(rotAxis, rotAngle);
             
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 2));
-                surface.AddVertex(offset + new GPos(0, 1, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 3));
-                surface.AddVertex(offset + new GPos(-1, 1, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 4, 0));
-                surface.AddVertex(offset + new GPos(-1, 1, -1));
-            }
-            else if (direction == BlockDown)
-            {
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 2));
-                surface.AddVertex(offset + new GPos(0, 0, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 1));
-                surface.AddVertex(offset + new GPos(0, 0, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 0));
-                surface.AddVertex(offset + new GPos(-1, 0, -1));
-
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 2));
-                surface.AddVertex(offset + new GPos(0, 0, 0));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 0));
-                surface.AddVertex(offset + new GPos(-1, 0, -1));
-                surface.AddUv(BlockTextureMapper.GetUvForFace(type, 5, 3));
-                surface.AddVertex(offset + new GPos(-1, 0, 0));
-            }
-            else
-            {
-                throw new Exception("Invalid direction");
-            }
+            // First triangle
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddUv(new Vector2(0, 0));
+            surface.AddVertex(tl);
+            
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddUv(new Vector2(1, 1));
+            surface.AddVertex(br);
+            
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddUv(new Vector2(0, 1));
+            surface.AddVertex(bl);
+            
+            // Second triangle
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddUv(new Vector2(0, 0));
+            surface.AddVertex(tl);
+            
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddUv(new Vector2(1, 0));
+            surface.AddVertex(tr);
+            
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddUv(new Vector2(1, 1));
+            surface.AddVertex(br);
         }
     }
 }

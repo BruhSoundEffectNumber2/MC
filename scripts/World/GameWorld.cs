@@ -34,7 +34,7 @@ namespace MC.World
             {
                 Monitor.Enter(GenerationLock);
                 GenerateChunks();
-                MeshChunks();
+                VisualizeChunks();
                 Monitor.Exit(GenerationLock);
             });
             
@@ -57,14 +57,14 @@ namespace MC.World
             }
         }
         
-        private static void MeshChunks()
+        private static void VisualizeChunks()
         {
             for (int x = 0; x < RenderDistance * 2; x++)
             {
                 for (int y = 0; y < RenderDistance * 2; y++)
                 {
                     var surface = ChunkGenerator.GenerateSurface(ref _localChunks, new CPos(x, y));
-                    
+
                     var worldPosition = new CPos(x - RenderDistance, y - RenderDistance);
                     WorldManager.AddChunk(worldPosition, surface);
                 }

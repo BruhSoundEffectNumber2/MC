@@ -6,69 +6,30 @@ using Godot;
 
 namespace MC.Graphics
 {
-    public struct FaceUv
+    /// <summary>
+    /// Contains an array of the vertex colors passed to the shader for each face of a block.
+    /// </summary>
+    public struct BlockTexture
     {
-        // UVs for each corner of the face, starting at the top left corner and moving clockwise
-        public Vector2[] Corners;
+        public Color[] Colors;
         
-        public FaceUv(Vector2[] corners)
+        public BlockTexture(Color[] colors)
         {
-            Corners = corners;
-        }
-    }
-
-    public struct BlockUv
-    {
-        public FaceUv[] Faces;
-
-        /// <summary>
-        /// Creates a new BlockUV, assigning each face a UV for each corner.
-        /// </summary>
-        /// <param name="faceTexCoords">
-        /// A 6 long set of vectors that correspond to the textures
-        /// place within the atlas.
-        /// </param>
-        public BlockUv(Vector2[] faceTexCoords)
-        {
-            Faces = new FaceUv[6];
-            
-            for (int i = 0; i < 6; i++)
-            {
-                var corners = new Vector2[4];
-
-                for (int j = 0; j < 4; j++)
-                {
-                    corners[j] = BlockTextureMapper.AtlasFaceToUv(faceTexCoords[i], j);
-                }
-                
-                Faces[i] = new FaceUv(corners);
-            }
+            Colors = colors;
         }
     }
     
     public static class BlockTextureMapper
     {
         // TODO: We will want to have different atlas sizes in the future
-        
-        /// <summary>
-        /// The number of pixels in each direction for a texture in the atlas. <br/>
-        /// This includes the margin pixels, so the actual size is this - 2 * Margin.
-        /// </summary>
-        public const int GridSize = 20;
 
-        /// <summary>
-        /// The number of pixels in each direction for the entire atlas.
-        /// </summary>
-        public const int AtlasSize = 1280;
-
-        public const int Margin = 2;
-
-        private static List<BlockUv> _blocks;
+        private static List<BlockTexture> _blocks;
         private static Dictionary<string, int> _blockIndices;
 
         public static void Initialize()
         {
-            _blocks = new List<BlockUv>();
+            GD.Print(ColorFromPosition(new Vector2(2, 0)));
+            _blocks = new List<BlockTexture>();
             _blockIndices = new Dictionary<string, int>();
             
             // Load the atlas data
@@ -77,7 +38,7 @@ namespace MC.Graphics
                 parser.Open("res://textures/atlas/atlas_blocks_data.xml");
                 int id = 0;
                 string name = "";
-                Vector2[] faces = new Vector2[6];
+                var colors = new Color[6];
 
                 while (parser.Read() == Error.Ok)
                 {
@@ -88,7 +49,7 @@ namespace MC.Graphics
                         {
                             // A new block, reinitialize the data
                             case "block":
-                                faces = new Vector2[6];
+                                colors = new Color[6];
                                 id = int.Parse(parser.GetAttributeValue(0));
                                 break;
                             // The name of the block
@@ -100,6 +61,7 @@ namespace MC.Graphics
                             case "face":
                                 var x = parser.GetAttributeValue(0);
                                 var y = parser.GetAttributeValue(1);
+                                var pos = new Vector2(float.Parse(x), float.Parse(y));
                                 
                                 parser.Read();
                                 var type = parser.GetNodeData();
@@ -109,17 +71,21 @@ namespace MC.Graphics
                                 {
                                     // All faces are the same
                                     case "all":
-                                        faces[0] = new Vector2(float.Parse(x), float.Parse(y));
-                                        faces[1] = faces[2] = faces[3] = faces[4] = faces[5] = faces[0];
+                                        for (int i = 0; i < 6; i++)
+                                        {
+                                            colors.SetValue(ColorFromPosition(pos), i);
+                                        }
                                         break;
                                     // The front, back, left, and right faces are the same
                                     case "side":
-                                        faces[0] = new Vector2(float.Parse(x), float.Parse(y));
-                                        faces[1] = faces[2] = faces[3] = faces[0];
+                                        for (int i = 0; i < 4; i++)
+                                        {
+                                            colors.SetValue(ColorFromPosition(pos), i);
+                                        }
                                         break;
                                     // Only the given face is set
                                     default:
-                                        faces[DirectionFromName(type)] = new Vector2(float.Parse(x), float.Parse(y));
+                                        colors.SetValue(ColorFromPosition(pos), DirectionFromName(type));
                                         break;
                                 }
                                 break;
@@ -132,7 +98,7 @@ namespace MC.Graphics
                         if (parser.GetNodeName() == "block")
                         {
                             // Create the BlockUv
-                            _blocks.Insert(id, new BlockUv(faces));
+                            _blocks.Insert(id, new BlockTexture(colors));
                             _blockIndices.Add(name, id);
                         }
                     }
@@ -140,39 +106,18 @@ namespace MC.Graphics
             }
         }
 
-        public static Vector2 GetUvForFace(string blockName, int dir, int corner)
+        public static Color ColorForBlockFace(int type, int dir)
         {
-            // Gets index of the block from the name, then looks at the given face and corner
-            return _blocks[
-                _blockIndices[blockName]
-            ].Faces[dir].Corners[corner];
+            return _blocks[type].Colors[dir];
         }
         
-        public static Vector2 GetUvForFace(int blockId, int dir, int corner)
-        {
-            return _blocks[blockId].Faces[dir].Corners[corner];
-        }
-
         /// <summary>
-        /// Gets the UV coordinates for a face of a block.
+        /// Returns the vertex color that should be used for the given part
+        /// of the TextureArray.
         /// </summary>
-        /// <param name="pos">The position within the grid of the atlas.</param>
-        /// <param name="corner">What corner of the texture, following the FaceUv convention.</param>
-        public static Vector2 AtlasFaceToUv(Vector2 pos, int corner)
+        private static Color ColorFromPosition(Vector2 position)
         {
-            switch (corner)
-            {
-                case 0:
-                    return (pos * GridSize + new Vector2(Margin, Margin)) / AtlasSize;
-                case 1:
-                    return (pos * GridSize + new Vector2(GridSize - Margin, Margin)) / AtlasSize;
-                case 2:
-                    return (pos * GridSize + new Vector2(GridSize - Margin, GridSize - Margin)) / AtlasSize;
-                case 3:
-                    return (pos * GridSize + new Vector2(Margin, GridSize - Margin)) / AtlasSize;
-            }
-            
-            throw new Exception("Invalid corner");
+            return Color.Color8((byte) (position.x * 4), (byte) (position.y * 4), 0);
         }
     }
 }

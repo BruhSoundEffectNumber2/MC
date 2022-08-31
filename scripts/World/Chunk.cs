@@ -16,11 +16,13 @@ namespace MC.World
     {
         public bool Solid;
         public int Type;
+        public float[] LightFactors; 
         
         public Block(bool solid, int type)
         {
             Solid = solid;
             Type = type;
+            LightFactors = new float[6];
         }
     }
     
@@ -45,6 +47,7 @@ namespace MC.World
                     for (int z = 0; z < ChunkSize; z++)
                     {
                         BPos pos = new BPos(x, y, z);
+                        //this[pos] = new Block(x == 0 && y == 0 && z == 0, 1);
                         this[pos] = new Block(TerrainGenerator.BlockSolid(position, pos), 1);
                     }
                 }

@@ -25,6 +25,30 @@ namespace MC
         public static BPos BlockRight = new BPos(-1, 0, 0);
         public static BPos BlockUp = new BPos(0, 1, 0);
         public static BPos BlockDown = new BPos(0, -1, 0);
+        
+        public static GPos GDirFromBDir(BPos dir)
+        {
+            if (dir == BlockForward) return Vector3.Forward;
+            if (dir == BlockBackward) return Vector3.Back;
+            if (dir == BlockLeft) return Vector3.Left;
+            if (dir == BlockRight) return Vector3.Right;
+            if (dir == BlockUp) return Vector3.Up;
+            if (dir == BlockDown) return Vector3.Down;
+            
+            throw new Exception("Invalid block direction");
+        }
+
+        public static int DirectionFromVector(BPos vector)
+        {
+            if (vector == BlockForward) return 0;
+            if (vector == BlockBackward) return 1;
+            if (vector == BlockLeft) return 2;
+            if (vector == BlockRight) return 3;
+            if (vector == BlockUp) return 4;
+            if (vector == BlockDown) return 5;
+            
+            throw new Exception("Invalid block direction");
+        }
 
         public static BPos VectorFromDirection(int i)
         {
