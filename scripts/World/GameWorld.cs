@@ -11,21 +11,29 @@ namespace MC.World
 {
     public static class GameWorld
     {
+        private static readonly object GenerationLock = new object();
+
         public static int RenderDistance => 8;
 
         private static CPos _localChunksCenter;
         private static Chunk[,] _localChunks;
+        private static Player _player;
         
-        private static readonly object GenerationLock = new object();
-        
-        public static void Initialize()
+        public static void Initialize(Player player)
         {
+            _player = player;
+            
             TerrainGenerator.Initialize();
             BlockTextureMapper.Initialize();
 
             _localChunksCenter = CPos.Zero;
             _localChunks = new Chunk[RenderDistance * 2, RenderDistance * 2];
             UpdateChunks();
+        }
+
+        public static void Update()
+        {
+            
         }
 
         private static void UpdateChunks()
@@ -50,7 +58,7 @@ namespace MC.World
                     // We might not have generated the chunk before
                     if (_localChunks[x, y] == null)
                     {
-                        var worldPosition = new CPos(x - RenderDistance, y - RenderDistance);
+                        var worldPosition = _localChunksCenter + new CPos(x - RenderDistance, y - RenderDistance);
                         
                         var chunk = new Chunk(worldPosition);
                         ChunkLighting.LightChunk(ref chunk);
@@ -69,7 +77,7 @@ namespace MC.World
                 {
                     var surface = ChunkGenerator.GenerateSurface(ref _localChunks, new CPos(x, y));
 
-                    var worldPosition = new CPos(x - RenderDistance, y - RenderDistance);
+                    var worldPosition = _localChunksCenter + new CPos(x - RenderDistance, y - RenderDistance);
                     WorldManager.AddChunk(worldPosition, surface);
                 }
             }

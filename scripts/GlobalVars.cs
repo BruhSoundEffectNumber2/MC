@@ -109,5 +109,10 @@ namespace MC
         {
             return new GPos(-position.x, position.y, -position.z);
         }
+
+        public static CPos ChunkPosition(GPos translation)
+        {
+            return new Vector2(Mathf.FloorToInt(-translation.x / ChunkSize), Mathf.FloorToInt(-translation.z / ChunkSize));
+        }
     }
 }

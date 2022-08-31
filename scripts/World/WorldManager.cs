@@ -20,11 +20,13 @@ namespace MC.World
             _instance = this;
             VisualServer.SetDebugGenerateWireframes(true);
 
-            GameWorld.Initialize();
+            GameWorld.Initialize(GetNode<Player>("/root/Level/Player"));
         }
 
         public override void _Process(float delta)
         {
+            GameWorld.Update();
+            
             if (Input.IsActionJustPressed("ui_accept"))
             {
                 // Cycle through all the debug drawing modes
@@ -46,10 +48,33 @@ namespace MC.World
             mesh.SurfaceSetMaterial(0, _instance.BlocksMaterial);
 
             var node = new MeshInstance();
+            node.Name = $"ChunkX{position.x}Y{position.y}";
             node.Mesh = mesh;
             node.Translation = ChunkTranslation(position);
             
             _instance.AddChild(node);
+            node.Owner = _instance;
+        }
+
+        public static void UpdateChunk(CPos position, GArray surface)
+        {
+            var node = _instance.GetNode<MeshInstance>($"ChunkX{position.x}Y{position.y}");
+            if (node == null) return;
+            
+            var mesh = new ArrayMesh();
+            mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, surface);
+            mesh.SurfaceSetMaterial(0, _instance.BlocksMaterial);
+
+            node.Mesh = mesh;
+        }
+
+        public static void RemoveChunk(CPos position)
+        {
+            var node = _instance.GetNode($"ChunkX{position.x}Y{position.y}");
+            if (node == null) return;
+            
+            _instance.RemoveChild(node);
+            node.QueueFree();
         }
     }
 }
