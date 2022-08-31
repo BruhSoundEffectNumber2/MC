@@ -37,5 +37,16 @@ namespace MC.World.Terrain
             
             return blockPosition.y <= height;
         }
+
+        public static int BlockType(ref Chunk chunk, BPos blockPosition)
+        {
+            // If the block above is solid, it is dirt. If not, it is grass
+            
+            BPos above = blockPosition + new BPos(0, 1, 0);
+            if (above.y >= ChunkHeight)
+                return 1;
+
+            return chunk[above].Solid ? 0 : 1;
+        }
     }
 }

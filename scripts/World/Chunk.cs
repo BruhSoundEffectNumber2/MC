@@ -22,7 +22,7 @@ namespace MC.World
         {
             Solid = solid;
             Type = type;
-            LightFactors = new float[6];
+            LightFactors = new [] {0.7f, 0.7f, 0.7f, 0.7f, 1f, 0.3f};
         }
     }
     
@@ -40,6 +40,7 @@ namespace MC.World
             Position = position;
             _blocks = new Block[16, 256, 16];
 
+            // Create the blocks
             for (int y = 0; y < ChunkHeight; y++)
             {
                 for (int x = 0; x < ChunkSize; x++)
@@ -47,8 +48,35 @@ namespace MC.World
                     for (int z = 0; z < ChunkSize; z++)
                     {
                         BPos pos = new BPos(x, y, z);
-                        //this[pos] = new Block(x == 0 && y == 0 && z == 0, 1);
-                        this[pos] = new Block(TerrainGenerator.BlockSolid(position, pos), 1);
+                        this[pos] = new Block(TerrainGenerator.BlockSolid(position, pos), 0);
+                    }
+                }
+            }
+            
+            // Determine the type of block
+            for (int y = 0; y < ChunkHeight; y++)
+            {
+                for (int x = 0; x < ChunkSize; x++)
+                {
+                    for (int z = 0; z < ChunkSize; z++)
+                    {
+                        BPos pos = new BPos(x, y, z);
+                        
+                        if (this[pos].Solid == false) continue;
+                        
+                        var block = this[pos];
+                        BPos above = pos + new BPos(0, 1, 0);
+
+                        if (above.y >= ChunkHeight)
+                        {
+                            block.Type = 1;
+                        }
+                        else
+                        {
+                            block.Type = this[above].Solid ? 0 : 1;
+                        }
+                        
+                        this[pos] = block;
                     }
                 }
             }

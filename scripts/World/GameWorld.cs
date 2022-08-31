@@ -34,7 +34,7 @@ namespace MC.World
             {
                 Monitor.Enter(GenerationLock);
                 GenerateChunks();
-                VisualizeChunks();
+                MeshChunks();
                 Monitor.Exit(GenerationLock);
             });
             
@@ -51,13 +51,17 @@ namespace MC.World
                     if (_localChunks[x, y] == null)
                     {
                         var worldPosition = new CPos(x - RenderDistance, y - RenderDistance);
-                        _localChunks[x, y] = new Chunk(worldPosition);
+                        
+                        var chunk = new Chunk(worldPosition);
+                        ChunkLighting.LightChunk(ref chunk);
+                        
+                        _localChunks[x, y] = chunk;
                     }
                 }
             }
         }
         
-        private static void VisualizeChunks()
+        private static void MeshChunks()
         {
             for (int x = 0; x < RenderDistance * 2; x++)
             {

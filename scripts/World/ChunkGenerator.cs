@@ -35,7 +35,7 @@ namespace MC.World
                             
                             if (AdjacentSolid(ref chunks, position, offset, vector)) continue;
                             
-                            AddFace(ref surface, BlockTranslation(offset), i, chunk[x, y, z].Type);
+                            AddFace(ref surface, BlockTranslation(offset), i, chunk[x, y, z]);
                         }
                     }
                 }
@@ -124,7 +124,7 @@ namespace MC.World
             return chunk[checkPosition].Solid;
         }
 
-        private static void AddFace(ref SurfaceTool surface, GPos offset, int dir, int type)
+        private static void AddFace(ref SurfaceTool surface, GPos offset, int dir, Block block)
         {
             var start = Vector3.Zero;
             var rotAxis = Vector3.Zero;
@@ -170,28 +170,28 @@ namespace MC.World
             var br = offset + (start + new Vector3(-1, 0, 0)).Rotated(rotAxis, rotAngle);
             
             // First triangle
-            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(block, dir));
             surface.AddUv(new Vector2(0, 0));
             surface.AddVertex(tl);
             
-            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(block, dir));
             surface.AddUv(new Vector2(1, 1));
             surface.AddVertex(br);
             
-            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(block, dir));
             surface.AddUv(new Vector2(0, 1));
             surface.AddVertex(bl);
             
             // Second triangle
-            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(block, dir));
             surface.AddUv(new Vector2(0, 0));
             surface.AddVertex(tl);
             
-            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(block, dir));
             surface.AddUv(new Vector2(1, 0));
             surface.AddVertex(tr);
             
-            surface.AddColor(BlockTextureMapper.ColorForBlockFace(type, dir));
+            surface.AddColor(BlockTextureMapper.ColorForBlockFace(block, dir));
             surface.AddUv(new Vector2(1, 1));
             surface.AddVertex(br);
         }

@@ -14,5 +14,6 @@ float arrayIndex(vec3 vert_col) {
 }
 
 void fragment() {
-    ALBEDO = texture(tex, vec3(UV.x, UV.y, arrayIndex(COLOR.rgb))).rgb;
+	vec3 base_col = texture(tex, vec3(UV.x, UV.y, arrayIndex(COLOR.rgb))).rgb;
+    ALBEDO = base_col * COLOR.b;
 }"

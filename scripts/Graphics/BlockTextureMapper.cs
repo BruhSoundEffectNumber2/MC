@@ -3,6 +3,7 @@ using static MC.GlobalVars;
 using System;
 using System.Collections.Generic;
 using Godot;
+using MC.World;
 
 namespace MC.Graphics
 {
@@ -28,7 +29,6 @@ namespace MC.Graphics
 
         public static void Initialize()
         {
-            GD.Print(ColorFromPosition(new Vector2(2, 0)));
             _blocks = new List<BlockTexture>();
             _blockIndices = new Dictionary<string, int>();
             
@@ -106,9 +106,15 @@ namespace MC.Graphics
             }
         }
 
-        public static Color ColorForBlockFace(int type, int dir)
+        public static Color ColorForBlockFace(Block block, int dir)
         {
-            return _blocks[type].Colors[dir];
+            // Get the base color for texturing
+            Color col = _blocks[block.Type].Colors[dir];
+            
+            // Set the blue channel based on the face's light factor
+            col.b = block.LightFactors[dir];
+            
+            return col;
         }
         
         /// <summary>
