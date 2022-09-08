@@ -1,118 +1,85 @@
 ﻿using System;
 using Godot;
 
-using GPos = Godot.Vector3;
-using BPos = Godot.Vector3;
-using CPos = Godot.Vector2;
-
 namespace MC
 {
+    public enum WorldDirection
+    {
+        Forward,
+        Backward,
+        Left,
+        Right,
+        Up,
+        Down
+    }
+
+    public static class Extensions
+    {
+        public static Vector3 ToVector(this WorldDirection direction)
+        {
+            switch (direction)
+            {
+                // Godot's coordinate system has the X and Z axes inverted from ours.
+                case WorldDirection.Forward:
+                    return Vector3.Back;
+                case WorldDirection.Backward:
+                    return Vector3.Forward;
+                case WorldDirection.Left:
+                    return Vector3.Right;
+                case WorldDirection.Right:
+                    return Vector3.Left;
+                case WorldDirection.Up:
+                    return Vector3.Up;
+                case WorldDirection.Down:
+                    return Vector3.Down;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+        }
+    }
+    
     public static class GlobalVars
     {
         /// <summary>
         /// The size of a chunk in the X and Z axis.
         /// </summary>
         public const int ChunkSize = 16;
+        
         /// <summary>
         /// The height of a chunk (Y axis).
         /// </summary>
         public const int ChunkHeight = 256;
-        public const int SeaLevel = 60;
         
-        public static BPos BlockForward = new BPos(0, 0, 1);
-        public static BPos BlockBackward = new BPos(0, 0, -1);
-        public static BPos BlockLeft = new BPos(1, 0, 0);
-        public static BPos BlockRight = new BPos(-1, 0, 0);
-        public static BPos BlockUp = new BPos(0, 1, 0);
-        public static BPos BlockDown = new BPos(0, -1, 0);
+        /// <summary>
+        /// How many chunks in each direction are rendered. <br/>
+        /// Must be greater than 0.
+        /// </summary>
+        public static uint RenderDistance { get; private set; } = 12;
         
-        public static GPos GDirFromBDir(BPos dir)
-        {
-            if (dir == BlockForward) return Vector3.Forward;
-            if (dir == BlockBackward) return Vector3.Back;
-            if (dir == BlockLeft) return Vector3.Left;
-            if (dir == BlockRight) return Vector3.Right;
-            if (dir == BlockUp) return Vector3.Up;
-            if (dir == BlockDown) return Vector3.Down;
-            
-            throw new Exception("Invalid block direction");
-        }
-
-        public static int DirectionFromVector(BPos vector)
-        {
-            if (vector == BlockForward) return 0;
-            if (vector == BlockBackward) return 1;
-            if (vector == BlockLeft) return 2;
-            if (vector == BlockRight) return 3;
-            if (vector == BlockUp) return 4;
-            if (vector == BlockDown) return 5;
-            
-            throw new Exception("Invalid block direction");
-        }
-
-        public static BPos VectorFromDirection(int i)
-        {
-            switch (i)
-            {
-                case 0:
-                    return BlockForward;
-                case 1:
-                    return BlockBackward;
-                case 2:
-                    return BlockLeft;
-                case 3:
-                    return BlockRight;
-                case 4:
-                    return BlockUp;
-                case 5:
-                    return BlockDown;
-                default:
-                    throw new Exception("Invalid direction");
-            }
-        }
-
-        public static int DirectionFromName(string name)
-        {
-            switch (name)
-            {
-                case "forward":
-                    return 0;
-                case "backward":
-                    return 1;
-                case "left":
-                    return 2;
-                case "right":
-                    return 3;
-                case "top":
-                    return 4;
-                case "bottom":
-                    return 5;
-                default:
-                    throw new Exception("Invalid direction");
-            }
-        }
-
         /// <summary>
-        /// Returns the translation of a chunk in Godot's coordinate space.
+        /// How many chunks in each direction are simulated.
+        /// (i.e. things can happen in these chunks.) <br/>
+        /// This must be less than or equal to <see cref="RenderDistance"/>.
         /// </summary>
-        public static GPos ChunkTranslation(CPos position)
-        {
-            return new GPos(-position.x * ChunkSize, 0, -position.y * ChunkSize);
-        }
+        public static uint SimDistance { get; private set; } = 6;
+        
+        // TODO: Event system for when these change.
+        // TODO: Setup a system for actual settings.
 
-        /// <summary>
-        /// Returns of an offset of a block in Godot's coordinate space.
-        /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        public static GPos BlockTranslation(BPos position)
+        public static void SetRenderDistance(uint distance)
         {
-            return new GPos(-position.x, position.y, -position.z);
-        }
+            if (distance == 0)
+            {
+                return;
+            }
 
-        public static CPos ChunkPosition(GPos translation)
-        {
-            return new Vector2(Mathf.FloorToInt(-translation.x / ChunkSize), Mathf.FloorToInt(-translation.z / ChunkSize));
+            RenderDistance = distance;
+            
+            // The SimDistance cannot be greater than the RenderDistance.
+            if (SimDistance > RenderDistance)
+            {
+                SimDistance = RenderDistance;
+            }
         }
     }
 }

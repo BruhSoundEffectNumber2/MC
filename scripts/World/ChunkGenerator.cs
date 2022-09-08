@@ -1,4 +1,4 @@
-﻿using static MC.GlobalVars;
+﻿/*using static MC.GlobalVars;
 using System;
 using Godot;
 using MC.Graphics;
@@ -196,4 +196,4 @@ namespace MC.World
             surface.AddVertex(br);
         }
     }
-}
+}*/

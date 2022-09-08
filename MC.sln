@@ -2,6 +2,8 @@
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MC", "MC.csproj", "{D60A846B-8AEF-494E-B966-6F59E9147E51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCTests", "..\MCTests\MCTests\MCTests.csproj", "{9EBA54FC-1053-4B51-8C11-03C71FF6374E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 	Debug|Any CPU = Debug|Any CPU
@@ -15,5 +17,11 @@ Global
 		{D60A846B-8AEF-494E-B966-6F59E9147E51}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{D60A846B-8AEF-494E-B966-6F59E9147E51}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{D60A846B-8AEF-494E-B966-6F59E9147E51}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{9EBA54FC-1053-4B51-8C11-03C71FF6374E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EBA54FC-1053-4B51-8C11-03C71FF6374E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EBA54FC-1053-4B51-8C11-03C71FF6374E}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EBA54FC-1053-4B51-8C11-03C71FF6374E}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{9EBA54FC-1053-4B51-8C11-03C71FF6374E}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EBA54FC-1053-4B51-8C11-03C71FF6374E}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
